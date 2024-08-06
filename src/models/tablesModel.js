@@ -1,13 +1,13 @@
 import { Sequelize } from 'sequelize';
 
-const Categories = {
-  category_id: {
+const Tables = {
+  table_id: {
     type: Sequelize.INTEGER,
     primaryKey: true,
     autoIncrement: true,
     allowNull: false,
   },
-  category_name: {
+  table_name: {
     type: Sequelize.STRING,
     allowNull: false,
     validate: {
@@ -16,4 +16,4 @@ const Categories = {
   },
 };
 
-export default Categories;
+export default Tables;

@@ -12,5 +12,5 @@ router.get('/variants', getVariants);
 router.delete('/variants/:id', deleteVariants);
 router.put('/variants/:id', updateVariants);
 
-const variants = router;
-export default variants;
+const variant = router;
+export default variant;

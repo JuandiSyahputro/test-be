@@ -1,28 +1,28 @@
 import db from '../models/index.js';
-const categories = db.models.categories;
+const printers = db.models.printers;
 
-export const postCategories = (req, res) => {
-  const { category_name } = req.body;
+export const postPrinters = (req, res) => {
+  const { printer_name } = req.body;
 
-  if (!category_name) {
+  if (!printer_name) {
     return res
       .status(400)
-      .send({ message: 'Category name is required.', status: 400 });
+      .send({ message: 'Printers name is required.', status: 400 });
   }
 
-  categories
+  printers
     .create({
-      category_name,
+      printer_name,
     })
     .then((data) => {
       res.send({
-        message: 'Category Added',
+        message: 'Printers Added',
         data: data,
       });
     })
     .catch((error) => {
       res.status(500).send({
-        message: 'Some error occurred while creating the Category.',
+        message: 'Some error occurred while creating the Printers.',
         error: error.message,
         status: 500,
       });
@@ -30,18 +30,18 @@ export const postCategories = (req, res) => {
     });
 };
 
-export const getCategories = (req, res) => {
-  categories
+export const getPrinters = (req, res) => {
+  printers
     .findAll()
     .then((data) => {
       res.send({
-        message: 'All Categories',
+        message: 'All Printers',
         data: data,
       });
     })
     .catch((error) => {
       res.send({
-        message: 'An error occurred while fetching categories.',
+        message: 'An error occurred while fetching Printers.',
         error: error.message,
         status: 500,
       });
@@ -49,36 +49,36 @@ export const getCategories = (req, res) => {
     });
 };
 
-export const deleteCategories = (req, res) => {
+export const deletePrinters = (req, res) => {
   const { id } = req.params;
 
   if (!id) {
     return res
       .status(400)
-      .send({ message: 'Category id is required.', status: 400 });
+      .send({ message: 'Printers id is required.', status: 400 });
   }
 
-  categories
+  printers
     .destroy({
       where: {
-        category_id: id,
+        printer_id: id,
       },
     })
     .then((affectedRows) => {
       if (affectedRows == 0) {
         return res
           .status(404)
-          .send({ message: 'Category id not found.', status: 404 });
+          .send({ message: 'Printers id not found.', status: 404 });
       }
 
       res.send({
-        message: 'Category Deleted',
+        message: 'Printers Deleted',
         status: 200,
       });
     })
     .catch((error) => {
       res.status(500).send({
-        message: 'An error occurred while deleting the category.',
+        message: 'An error occurred while deleting the Printers.',
         error: error.message,
         status: 500,
       });
@@ -86,29 +86,29 @@ export const deleteCategories = (req, res) => {
     });
 };
 
-export const updateCategories = (req, res) => {
+export const updatePrinters = (req, res) => {
   const { id } = req.params;
-  const { category_name } = req.body;
+  const { printer_name } = req.body;
   if (!id) {
     return res
       .status(400)
       .send({ message: 'Category id is required.', status: 400 });
   }
 
-  if (!category_name) {
+  if (!printer_name) {
     return res
       .status(400)
-      .send({ message: 'Category name is required.', status: 400 });
+      .send({ message: 'Printers name is required.', status: 400 });
   }
 
-  categories
+  printers
     .update(
       {
-        category_name,
+        printer_name,
       },
       {
         where: {
-          category_id: id,
+          printer_id: id,
         },
       }
     )
@@ -116,17 +116,17 @@ export const updateCategories = (req, res) => {
       if (affectedRows == 0) {
         return res
           .status(404)
-          .send({ message: 'Category id not found.', status: 404 });
+          .send({ message: 'Printers id not found.', status: 404 });
       }
 
       res.send({
-        message: 'Category Updated',
+        message: 'Printers Updated',
         status: 200,
       });
     })
     .catch((error) => {
       res.status(500).send({
-        message: 'An error occurred while updating the category.',
+        message: 'An error occurred while updating the Printers.',
         error: error.message,
         status: 500,
       });

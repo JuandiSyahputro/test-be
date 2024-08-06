@@ -1,28 +1,28 @@
 import db from '../models/index.js';
-const categories = db.models.categories;
+const tables = db.models.tables;
 
-export const postCategories = (req, res) => {
-  const { category_name } = req.body;
+export const postTables = (req, res) => {
+  const { table_name } = req.body;
 
-  if (!category_name) {
+  if (!table_name) {
     return res
       .status(400)
-      .send({ message: 'Category name is required.', status: 400 });
+      .send({ message: 'Table name is required.', status: 400 });
   }
 
-  categories
+  tables
     .create({
-      category_name,
+      table_name,
     })
     .then((data) => {
       res.send({
-        message: 'Category Added',
+        message: 'Table Added',
         data: data,
       });
     })
     .catch((error) => {
       res.status(500).send({
-        message: 'Some error occurred while creating the Category.',
+        message: 'Some error occurred while creating the Table.',
         error: error.message,
         status: 500,
       });
@@ -30,18 +30,18 @@ export const postCategories = (req, res) => {
     });
 };
 
-export const getCategories = (req, res) => {
-  categories
+export const getTables = (req, res) => {
+  tables
     .findAll()
     .then((data) => {
       res.send({
-        message: 'All Categories',
+        message: 'All Tables',
         data: data,
       });
     })
     .catch((error) => {
       res.send({
-        message: 'An error occurred while fetching categories.',
+        message: 'An error occurred while fetching tables.',
         error: error.message,
         status: 500,
       });
@@ -49,36 +49,36 @@ export const getCategories = (req, res) => {
     });
 };
 
-export const deleteCategories = (req, res) => {
+export const deleteTables = (req, res) => {
   const { id } = req.params;
 
   if (!id) {
     return res
       .status(400)
-      .send({ message: 'Category id is required.', status: 400 });
+      .send({ message: 'Table id is required.', status: 400 });
   }
 
-  categories
+  tables
     .destroy({
       where: {
-        category_id: id,
+        table_id: id,
       },
     })
     .then((affectedRows) => {
       if (affectedRows == 0) {
         return res
           .status(404)
-          .send({ message: 'Category id not found.', status: 404 });
+          .send({ message: 'Table id not found.', status: 404 });
       }
 
       res.send({
-        message: 'Category Deleted',
+        message: 'Table Deleted',
         status: 200,
       });
     })
     .catch((error) => {
       res.status(500).send({
-        message: 'An error occurred while deleting the category.',
+        message: 'An error occurred while deleting the table.',
         error: error.message,
         status: 500,
       });
@@ -86,29 +86,30 @@ export const deleteCategories = (req, res) => {
     });
 };
 
-export const updateCategories = (req, res) => {
+export const updateTables = (req, res) => {
   const { id } = req.params;
-  const { category_name } = req.body;
+  const { table_name } = req.body;
+
   if (!id) {
     return res
       .status(400)
-      .send({ message: 'Category id is required.', status: 400 });
+      .send({ message: 'Table id is required.', status: 400 });
   }
 
-  if (!category_name) {
+  if (!table_name) {
     return res
       .status(400)
-      .send({ message: 'Category name is required.', status: 400 });
+      .send({ message: 'Table name is required.', status: 400 });
   }
 
-  categories
+  tables
     .update(
       {
-        category_name,
+        table_name,
       },
       {
         where: {
-          category_id: id,
+          table_id: id,
         },
       }
     )
@@ -116,20 +117,19 @@ export const updateCategories = (req, res) => {
       if (affectedRows == 0) {
         return res
           .status(404)
-          .send({ message: 'Category id not found.', status: 404 });
+          .send({ message: 'Table id not found.', status: 404 });
       }
 
       res.send({
-        message: 'Category Updated',
+        message: 'Table Updated',
         status: 200,
       });
     })
     .catch((error) => {
       res.status(500).send({
-        message: 'An error occurred while updating the category.',
+        message: 'An error occurred while updating the table.',
         error: error.message,
         status: 500,
       });
-      console.log(error.message);
     });
 };

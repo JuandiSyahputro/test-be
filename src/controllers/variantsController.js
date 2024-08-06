@@ -2,16 +2,23 @@ import db from '../models/index.js';
 const variants = db.models.variants;
 
 export const postVariants = (req, res) => {
-  const { variant_name } = req.body;
+  const { variant_name, price, product_id } = req.body;
 
-  if (!variant_name) {
+  if (!price) {
+    return res.status(400).send({ message: 'Price is required.', status: 400 });
+  }
+
+  if (!product_id) {
     return res
       .status(400)
-      .send({ message: 'Variant name is required.', status: 400 });
+      .send({ message: 'Product id is required.', status: 400 });
   }
+
   variants
     .create({
-      variant_name,
+      variant_name: variant_name || null,
+      price,
+      product_id,
     })
     .then((data) => {
       res.send({
@@ -20,7 +27,11 @@ export const postVariants = (req, res) => {
       });
     })
     .catch((error) => {
-      res.status(500).send(error);
+      res.status(500).send({
+        message: 'Some error occurred while creating the Variant.',
+        error: error.message,
+        status: 500,
+      });
       console.log(error.message);
     });
 };
@@ -52,7 +63,7 @@ export const deleteVariants = (req, res) => {
   variants
     .destroy({
       where: {
-        id: id,
+        variant_id: id,
       },
     })
     .then((affectedRows) => {
@@ -79,7 +90,8 @@ export const deleteVariants = (req, res) => {
 
 export const updateVariants = (req, res) => {
   const { id } = req.params;
-  const { variant_name } = req.body;
+  const { variant_name, price, product_id } = req.body;
+
   if (!id) {
     return res
       .status(400)
@@ -92,14 +104,26 @@ export const updateVariants = (req, res) => {
       .send({ message: 'Variants name is required.', status: 400 });
   }
 
+  if (!price) {
+    return res.status(400).send({ message: 'Price is required.', status: 400 });
+  }
+
+  if (!product_id) {
+    return res
+      .status(400)
+      .send({ message: 'Product id is required.', status: 400 });
+  }
+
   variants
     .update(
       {
         variant_name,
+        price,
+        product_id,
       },
       {
         where: {
-          id: id,
+          variant_id: id,
         },
       }
     )
